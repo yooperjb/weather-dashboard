@@ -63,7 +63,7 @@ var createCityEl = function(city) {
     $(".city-list").append(cityListEl);
 };
 
-// Get weather data from OpenWeatherAPI
+// Get weather data from OpenWeatherAPI - return data
 var getWeather = function(city) {
     var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
     var url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
@@ -72,10 +72,21 @@ var getWeather = function(city) {
         .then(data => {
             //console.log(data);
             //console.log(data.main);
-            return data;
+            displayWeather(data);
         });
     
 };
+
+// Display weather data
+var displayWeather = function(data){
+    console.log(data);
+    $("#city-display").text(data.name);
+    $(".temp").text("Temperature: "+Math.round(data.main.temp*10)/10+" F");
+    $(".humidity").text("Humidity: "+data.main.humidity+"%");
+    $(".wind").text("Wind: "+Math.round(data.wind.speed*10)/10+" MPH");
+    //$(".uv").text("UV Index: "+data.main.humidity);
+};
+
 
 getWeather("Arcata");
 loadCities();
