@@ -5,3 +5,12 @@
     border: 2px solid gray;
     border-radius: 8px;
 }
+
+.ap-input-icon.ap-icon-pin {
+    display: none;
+}
+
+#icon-display img {
+    height: 2.2em;
+    margin: -15px -5px;
+}
