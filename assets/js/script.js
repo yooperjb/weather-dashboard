@@ -85,16 +85,16 @@ var createCityEl = function(city) {
 var getWeather = function(city) {
     var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
     var url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
-
+    //data = {}
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            //console.log(data.main);
+            console.log("data is: ",data);
             displayWeather(data);
+            displayUV(data);
         });
     // I need to call the uv api at http://api.openweathermap.org/data/2.5/uvi?lat={lat}&lon={lon}&appid={API key} with the lat long from data - probably create another function displayUV to display it.
-    console.log("data is:", data);
+    //console.log("data is:", data);
 };
 
 // Display weather data
@@ -105,7 +105,23 @@ var displayWeather = function(data){
     $(".temp").text("Temperature: "+Math.round(data.main.temp*10)/10+" F");
     $(".humidity").text("Humidity: "+data.main.humidity+"%");
     $(".wind").text("Wind: "+Math.round(data.wind.speed*10)/10+" MPH");
-    //$(".uv").text("UV Index: "+data.main.humidity);
+    
+};
+
+// Display UV data
+var displayUV = function(data) {
+    var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
+    var lat = data.coord.lat;
+    var lon = data.coord.lon;
+    var uvURL = "http://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey;
+    console.log(lat,lon,uvURL);
+    fetch(uvURL)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            $(".uv").text("UV Index: "+data.value);
+        });
+
 };
 
 

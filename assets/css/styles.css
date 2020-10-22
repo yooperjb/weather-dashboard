@@ -1,4 +1,5 @@
 
+/* Weather display styles */
 #weather {
     margin: 10px 0px;
     padding: 20px;
@@ -6,11 +7,13 @@
     border-radius: 8px;
 }
 
-.ap-input-icon.ap-icon-pin {
-    display: none;
-}
-
 #icon-display img {
     height: 2.2em;
     margin: -15px -5px;
+}
+
+
+/* Agolia API styles */
+.ap-input-icon.ap-icon-pin {
+    display: none;
 }
