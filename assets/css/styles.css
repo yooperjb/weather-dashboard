@@ -1,4 +1,8 @@
 
+.input-group {
+    flex-wrap: nowrap;
+}
+
 /* Weather display styles */
 #weather {
     margin: 10px 0px;
@@ -12,6 +16,7 @@
     margin: -15px -5px;
 }
 
+/* UV Color Styles */
 .low {
     padding: 6px;
     background: green;

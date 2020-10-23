@@ -53,7 +53,7 @@ $("#city-search").click(function() {
 // Load cities into arrary from localStorage
 var loadCities = function() {
     cities = JSON.parse(localStorage.getItem("cities"));
-    $(".city-list").empty();
+    $(".list-group").empty();
 
     if (!cities) {
         cities = [];
@@ -61,7 +61,6 @@ var loadCities = function() {
 
     // loop over cities - create city list-element
     $.each(cities, function(index) {
-        //console.log(cities[index]);
         createCityEl(cities[index]);
     })
 };
@@ -73,17 +72,18 @@ var saveCities = function() {
 
 // Create city list element
 var createCityEl = function(city) {
-    var cityListEl = $("<a>")
+    var cityListEl = $("<li>")
         .addClass("list-group-item list-group-item-action")
-        .attr("href", "")
         .text(city);
     
-    $(".city-list").append(cityListEl);
+    $(".list-group").append(cityListEl);
 };
 
 // Search for city that is clicked on from list
-$(".city-list").click(function(event){
-    console.log(event);
+$(".list-group").on("click", "li", function(event) {
+    event.preventDefault();
+    cityText = $(this).text();
+    getWeather(cityText);
 });
 
 // Get weather data from OpenWeatherAPI - return data
