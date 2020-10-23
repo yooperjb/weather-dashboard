@@ -81,6 +81,11 @@ var createCityEl = function(city) {
     $(".city-list").append(cityListEl);
 };
 
+// Search for city that is clicked on from list
+$(".city-list").click(function(event){
+    console.log(event);
+});
+
 // Get weather data from OpenWeatherAPI - return data
 var getWeather = function(city) {
     var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
@@ -108,23 +113,40 @@ var displayWeather = function(data){
     
 };
 
-// Display UV data
+// Fetch and display UV data
 var displayUV = function(data) {
     var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
     var lat = data.coord.lat;
     var lon = data.coord.lon;
     var uvURL = "http://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey;
-    console.log(lat,lon,uvURL);
+    
     fetch(uvURL)
         .then(response => response.json())
         .then(data => {
-            console.log("UV is: ",data.value);
-            $(".uv").text("UV Index: ");
-            $("#uv-value").text("put value here: "+data.value);
-        });
+            
+            // add span with uv index data and assign class
+            var uvSpanEl = $("<span>");
 
+            if (data.value <= 2) {
+                uvSpanEl.addClass("low").text(data.value);
+            }
+            else if (data.value <= 5) {
+                uvSpanEl.addClass("moderate").text(data.value);
+            }
+            else if (data.value <= 7) {
+                uvSpanEl.addClass("high").text(data.value);
+            }
+            else if (data.value <= 10) {
+                uvSpanEl.addClass("veryhigh").text(data.value);
+            }
+            else {
+                uvSpanEl.addClass("extreme").text(data.value);
+            }
+
+            // write values to HTML
+            $(".uv").text("UV Index: ");
+            $(".uv").append(uvSpanEl);
+        }); 
 };
 
-
-//getWeather("Arcata");
 loadCities();
