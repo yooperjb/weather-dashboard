@@ -7,8 +7,8 @@
 #weather {
     margin: 10px 0px;
     padding: 20px;
-    border: 2px solid gray;
-    border-radius: 8px;
+    border: 2px solid rgb(180, 180, 180);
+    border-radius: 7px;
 }
 
 #icon-display img {
