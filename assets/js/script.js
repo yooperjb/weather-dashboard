@@ -1,6 +1,23 @@
 
 var cities = [];
 
+// Algolia places API
+var placesAutocomplete = places({
+appId: 'plZ9J0X3JT85',
+apiKey: 'd4f18aa1a84be763e7706d34efa5b44f',
+container: document.querySelector('#city'),
+templates: {
+    value: function(suggestion){
+        return suggestion.name;
+    }
+}
+}).configure({
+    countries:['us'],
+    type: 'city',
+    aroundLatLngViaIP: false,
+    useDeviceLocation: false
+});
+
 // City Search Button
 $("#city-search").click(function() {
     var city = $("#city").val().trim();
@@ -27,9 +44,10 @@ $("#city-search").click(function() {
     }
 
     $("#city").val("");
-    console.log(cities);
+    //console.log(cities);
     saveCities();
     loadCities();
+    getWeather(city);
 });
 
 // Load cities into arrary from localStorage
@@ -67,26 +85,46 @@ var createCityEl = function(city) {
 var getWeather = function(city) {
     var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
     var url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
+    //data = {}
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            //console.log(data);
-            //console.log(data.main);
+            console.log("data is: ",data);
             displayWeather(data);
+            displayUV(data);
         });
-    
+    // I need to call the uv api at http://api.openweathermap.org/data/2.5/uvi?lat={lat}&lon={lon}&appid={API key} with the lat long from data - probably create another function displayUV to display it.
+    //console.log("data is:", data);
 };
 
 // Display weather data
 var displayWeather = function(data){
-    console.log(data);
     $("#city-display").text(data.name);
+    $("#date-display").text(moment().format(" (MM/DD/YYYY)"));
+    $("#icon-display").html("<img src='http://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png'/>");
     $(".temp").text("Temperature: "+Math.round(data.main.temp*10)/10+" F");
     $(".humidity").text("Humidity: "+data.main.humidity+"%");
     $(".wind").text("Wind: "+Math.round(data.wind.speed*10)/10+" MPH");
-    //$(".uv").text("UV Index: "+data.main.humidity);
+    
+};
+
+// Display UV data
+var displayUV = function(data) {
+    var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
+    var lat = data.coord.lat;
+    var lon = data.coord.lon;
+    var uvURL = "http://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey;
+    console.log(lat,lon,uvURL);
+    fetch(uvURL)
+        .then(response => response.json())
+        .then(data => {
+            console.log("UV is: ",data.value);
+            $(".uv").text("UV Index: ");
+            $("#uv-value").text("put value here: "+data.value);
+        });
+
 };
 
 
-getWeather("Arcata");
+//getWeather("Arcata");
 loadCities();
