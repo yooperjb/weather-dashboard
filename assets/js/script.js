@@ -130,7 +130,7 @@ var displayWeather = function(data, city){
     $("#city-display").text(city);
     $("#date-display").text(moment().format(" (MM/DD/YYYY)"));
     $("#icon-display").html("<img src='http://openweathermap.org/img/wn/"+data.current.weather[0].icon+"@2x.png'/>");
-    $(".temp").text("Temperature: "+Math.round(data.current.temp*10)/10+" F");
+    $(".temp").text("Temperature: "+Math.round(data.current.temp*10)/10+" \u00B0F");
     $(".humidity").text("Humidity: "+data.current.humidity+"%");
     $(".wind").text("Wind Speed: "+Math.round(data.current.wind_speed*10)/10+" MPH");
 
@@ -197,16 +197,24 @@ var displayUV = function(data) {
 
 // Display 5-day forcast data
 var displayForecast = function(data) {
+    
+    $("#five-day-forecast").show();
+
+    // loop through each day of weather object
     for (var i = 0; i < 5; i++) {
+        // create variables for each metric
         var date = convertUnixTimestamp(data.daily[i].dt);
-        console.log(date);
-        var temp = data.daily[i].temp.day;
+        var icon = data.daily[i].weather[0].icon;
+        var maxTemp = data.daily[i].temp.max;
+        var minTemp = data.daily[i].temp.min;
         var humidity = data.daily[i].humidity;
         
+        // assign values to html elements
         tempCard = $('[forecast="'+i+'"]');
-        
         tempCard.find(".card-header").text(date);
-        tempCard.find(".card-temp").text("Temp: "+temp+ "F");
+        tempCard.find(".card-icon").attr("src","http://openweathermap.org/img/wn/"+icon+"@2x.png");
+        tempCard.find(".card-maxtemp").text("Max Temp: "+Math.round(maxTemp*10)/10+ " \u00B0F");
+        tempCard.find(".card-mintemp").text("Min Temp: "+Math.round(minTemp*10)/10+ " \u00B0F");
         tempCard.find(".card-humidity").text("Humidity "+humidity+"%");
 
     }

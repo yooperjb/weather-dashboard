@@ -2,6 +2,12 @@
 .input-group {
     flex-wrap: nowrap;
 }
+#head-icon {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    margin: -15px 15px;
+}
 
 /* Weather display styles */
 #weather {
@@ -16,33 +22,60 @@
     margin: -15px -5px;
 }
 
+#weather p {
+    margin-bottom: .8rem;
+}
+
 /* UV Color Styles */
 .low {
-    padding: 6px;
+    padding: 4px 6px;
     background: green;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .moderate {
-    padding: 6px;
+    padding: 4px 6px;
     background: yellow;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 .high {
-    padding: 6px;
+    padding: 4px 6px;
     background: orange;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 .veryhigh {
-    padding: 6px;
+    padding: 4px 6px;
     background: red;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 .extreme {
-    padding: 6px;
+    padding: 4px 6px;
     background: purple;
-    border-radius: 10px;
+    border-radius: 8px;
 }
+
+/* Forecast Styles */
+#five-day-forecast {
+    display: none;
+}
+
+#forecast {
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+.card-body {
+    padding: .6rem;
+}
+
+.card-body p {
+    margin-bottom: .4rem;
+}
+img.card-icon {
+    height: 4em;
+    margin: -10px -5px;
+}
+
 
 /* Agolia API styles */
 .ap-input-icon.ap-icon-pin {
