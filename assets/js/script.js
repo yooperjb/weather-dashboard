@@ -1,5 +1,6 @@
 
 var cities = [];
+var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
 
 // Algolia places API
 var placesAutocomplete = places({
@@ -18,7 +19,7 @@ templates: {
     useDeviceLocation: false
 });
 
-// City Search Button
+// City Search Button - pass to saveCities, loadCities and getWeather
 $("#city-search").click(function() {
     var city = $("#city").val().trim();
     
@@ -33,7 +34,7 @@ $("#city-search").click(function() {
         else if (cities.length < 10) {
             cities.unshift(city);
         }
-        // if weather > 10 remove last and add to beginning
+        // if cities > 10 remove last and add to beginning
         else {
             cities.pop();
             cities.unshift(city);
@@ -44,7 +45,6 @@ $("#city-search").click(function() {
     }
 
     $("#city").val("");
-    //console.log(cities);
     saveCities();
     loadCities();
     getWeather(city);
@@ -79,7 +79,7 @@ var createCityEl = function(city) {
     $(".list-group").append(cityListEl);
 };
 
-// Search for city that is clicked on from list
+// Search for city that is clicked in city list
 $(".list-group").on("click", "li", function(event) {
     event.preventDefault();
     cityText = $(this).text();
@@ -87,33 +87,79 @@ $(".list-group").on("click", "li", function(event) {
 });
 
 // Get weather data from OpenWeatherAPI - return data
+/*
 var getWeather = function(city) {
-    var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
     var url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
-    //data = {}
+
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log("data is: ",data);
             displayWeather(data);
             displayUV(data);
+            displayForecast(city);
         });
-    // I need to call the uv api at http://api.openweathermap.org/data/2.5/uvi?lat={lat}&lon={lon}&appid={API key} with the lat long from data - probably create another function displayUV to display it.
-    //console.log("data is:", data);
+};
+*/
+
+// Get weather data from OpenWeatherAPI - return data
+var getWeather = function(city) {
+    // Initial fetch get Lat Lon for city
+    var url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            var lat = data.coord.lat;
+            var lon = data.coord.lon;
+            var cityName = data.name;
+            
+            // pass lat lon to next fetch for weather data - pass display functions
+            return fetch("https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude=minutely,hourly&appid="+apiKey+"&units=imperial");
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            console.log("Data:",data);
+            displayWeather(data, city);
+            displayForecast(data);
+        })
 };
 
 // Display weather data
-var displayWeather = function(data){
-    $("#city-display").text(data.name);
+var displayWeather = function(data, city){
+    $("#city-display").text(city);
     $("#date-display").text(moment().format(" (MM/DD/YYYY)"));
-    $("#icon-display").html("<img src='http://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png'/>");
-    $(".temp").text("Temperature: "+Math.round(data.main.temp*10)/10+" F");
-    $(".humidity").text("Humidity: "+data.main.humidity+"%");
-    $(".wind").text("Wind: "+Math.round(data.wind.speed*10)/10+" MPH");
-    
+    $("#icon-display").html("<img src='http://openweathermap.org/img/wn/"+data.current.weather[0].icon+"@2x.png'/>");
+    $(".temp").text("Temperature: "+Math.round(data.current.temp*10)/10+" F");
+    $(".humidity").text("Humidity: "+data.current.humidity+"%");
+    $(".wind").text("Wind Speed: "+Math.round(data.current.wind_speed*10)/10+" MPH");
+
+    // add span with uv index data and assign class based on value
+    var uvi = data.current.uvi;
+    var uvSpanEl = $("<span>");
+
+    if (uvi <= 2) {
+        uvSpanEl.addClass("low").text(uvi);
+    }
+    else if (uvi <= 5) {
+        uvSpanEl.addClass("moderate").text(uvi);
+    }
+    else if (uvi <= 7) {
+        uvSpanEl.addClass("high").text(uvi);
+    }
+    else if (uvi <= 10) {
+        uvSpanEl.addClass("veryhigh").text(uvi);
+    }
+    else {
+        uvSpanEl.addClass("extreme").text(uvi);
+    }
+
+    // write values to HTML
+    $(".uv").text("UV Index: ");
+    $(".uv").append(uvSpanEl);
 };
 
-// Fetch and display UV data
+// Fetch and display UV data - don't need this anymore delete after testing
 var displayUV = function(data) {
     var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
     var lat = data.coord.lat;
@@ -147,6 +193,33 @@ var displayUV = function(data) {
             $(".uv").text("UV Index: ");
             $(".uv").append(uvSpanEl);
         }); 
+};
+
+// Display 5-day forcast data
+var displayForecast = function(data) {
+    for (var i = 0; i < 5; i++) {
+        var date = convertUnixTimestamp(data.daily[i].dt);
+        console.log(date);
+        var temp = data.daily[i].temp.day;
+        var humidity = data.daily[i].humidity;
+        
+        tempCard = $('[forecast="'+i+'"]');
+        
+        tempCard.find(".card-header").text(date);
+        tempCard.find(".card-temp").text("Temp: "+temp+ "F");
+        tempCard.find(".card-humidity").text("Humidity "+humidity+"%");
+
+    }
+};
+
+// convert unix timestamp into date
+var convertUnixTimestamp = function(timestamp) {
+    var unixTimestamp = timestamp;
+    var milliseconds = unixTimestamp * 1000;
+    var dateObject = new Date(milliseconds);
+    var dateFormat = dateObject.toLocaleString();
+    var date = dateFormat.split(",")[0];
+    return date;
 };
 
 loadCities();
