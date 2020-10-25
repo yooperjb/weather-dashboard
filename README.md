@@ -22,6 +22,7 @@ When time allows I will be updating a few minor features on the application.
 * Display City and State abbreviation in the city list
 * Display City, state and possibly Country in the weather display panel
 * Add wind direction with rotating wind direction arrow
+* Display link to any alerts that may exist in the search area
 
 
 
