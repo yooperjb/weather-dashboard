@@ -105,7 +105,7 @@ var getWeather = function(city) {
         .then(response => response.json())
         .then(data => {
             
-            //console.log("Data:",data);
+            // Display weather and forecast data
             displayWeather(data, city);
             displayForecast(data);
         })
@@ -123,6 +123,7 @@ var displayWeather = function(data, city){
     $("#date-display").text(" "+ convertUnixTimestamp( data.current.dt) );
     $("#icon-display").html("<img src='http://openweathermap.org/img/wn/"+data.current.weather[0].icon+"@2x.png' >");
     $("#icon-display img").attr("alt", data.current.weather[0].description+ " icon");
+    $("#icon-display img").attr("title", data.current.weather[0].description);
     $(".temp").text("Temperature: "+Math.round(data.current.temp*10)/10+" \u00B0F");
     $(".humidity").text("Humidity: "+data.current.humidity+"%");
     $(".wind").text("Wind Speed: "+Math.round(data.current.wind_speed*10)/10+" MPH");
