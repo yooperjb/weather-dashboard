@@ -88,24 +88,9 @@ $(".list-group").on("click", "li", function(event) {
 });
 
 // Get weather data from OpenWeatherAPI - return data
-/*
-var getWeather = function(city) {
-    var url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            displayWeather(data);
-            displayUV(data);
-            displayForecast(city);
-        });
-};
-*/
-
-// Get weather data from OpenWeatherAPI - return data
 var getWeather = function(city) {
     // Initial fetch get Lat Lon for city
-    var url = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
+    var url = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+apiKey+"&units=imperial";
 
     fetch(url)
         .then(response => response.json())
@@ -123,6 +108,10 @@ var getWeather = function(city) {
             //console.log("Data:",data);
             displayWeather(data, city);
             displayForecast(data);
+        })
+        .catch(error => {
+            console.log("City Could Not Be Found");
+            displayError();
         })
 };
 
@@ -182,7 +171,7 @@ var displayForecast = function(data) {
         tempCard = $('[forecast="'+i+'"]');
         tempCard.find(".card-header").text(date);
         tempCard.find(".card-desc").text(desc);
-        tempCard.find(".card-icon").attr("src","http://openweathermap.org/img/wn/"+icon+"@2x.png");
+        tempCard.find(".card-icon").attr("src","https://openweathermap.org/img/wn/"+icon+"@2x.png");
         tempCard.find(".card-icon").attr("alt",data.daily[i].weather[0].description+" icon");
 
         tempCard.find(".card-maxtemp").text("Max Temp: "+Math.round(maxTemp*10)/10+ " \u00B0F");
@@ -190,6 +179,14 @@ var displayForecast = function(data) {
         tempCard.find(".card-humidity").text("Humidity "+humidity+"%");
 
     }
+};
+
+// Display error - city not found
+var displayError = function() {
+    $("#city-display").text("City Not Found");
+    $("#date-display, #icon-display, .temp, .humidity, .wind,.uv").text("");
+    $("#five-day-forecast").hide();
+
 };
 
 // convert unix timestamp into date
