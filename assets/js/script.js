@@ -163,44 +163,6 @@ var displayWeather = function(data, city){
     $(".uv").append(uvSpanEl);
 };
 
-// Fetch and display UV data - don't need this anymore delete after testing
-/*
-var displayUV = function(data) {
-    var apiKey = "fa400288e1b24a95393c31ac7761f9ee";
-    var lat = data.coord.lat;
-    var lon = data.coord.lon;
-    var uvURL = "http://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey;
-    
-    fetch(uvURL)
-        .then(response => response.json())
-        .then(data => {
-            
-            // add span with uv index data and assign class
-            var uvSpanEl = $("<span>");
-
-            if (data.value <= 2) {
-                uvSpanEl.addClass("low").text(data.value);
-            }
-            else if (data.value <= 5) {
-                uvSpanEl.addClass("moderate").text(data.value);
-            }
-            else if (data.value <= 7) {
-                uvSpanEl.addClass("high").text(data.value);
-            }
-            else if (data.value <= 10) {
-                uvSpanEl.addClass("veryhigh").text(data.value);
-            }
-            else {
-                uvSpanEl.addClass("extreme").text(data.value);
-            }
-
-            // write values to HTML
-            $(".uv").text("UV Index: ");
-            $(".uv").append(uvSpanEl);
-        }); 
-};
-*/
-
 // Display 5-day forcast data
 var displayForecast = function(data) {
     
