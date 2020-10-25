@@ -18,7 +18,7 @@ Once a city is searched, current weather is displayed in the main weather frame 
 
 ## Using the Application
 
-The application can be used by visiting the live version on GitHub pages, or can be downloaded or clones from the GitHub repo [here](https://github.com/yooperjb/weather-dashboard). Please keep in mind that the application requires a private API key from both OpenWeather and Algolia and one must be created and used before use. The version shown on GitHub pages is not fully functional due to the key being blocked by GitHub. 
+The application can be used by visiting the live version on GitHub pages, or can be downloaded or cloned from the GitHub repo [here](https://github.com/yooperjb/weather-dashboard). Please keep in mind that the application requires a private API key from both OpenWeather and Algolia and one must be created and used before use. The version shown on GitHub pages is not fully functional due to the key being blocked by GitHub. 
 
 ## Viewing the Weather Dashboard
 

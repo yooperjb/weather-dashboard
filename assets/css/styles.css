@@ -1,27 +1,29 @@
 
-.input-group {
-    flex-wrap: nowrap;
-}
+/*  Header Styles */
 #head-icon {
     width: 85px;
     height: 85px;
     object-fit: cover;
     margin: -15px 15px;
 }
+/* Search Styles */
+.input-group {
+    flex-wrap: nowrap;
+}
 
 .list-group-item-action:active {
     color: white;
     background:#169DB2;
+    transition: 750ms;
 }
 
 /* Weather display styles */
 #weather {
     margin: 10px 0px;
     padding: 20px;
-    border: 2px solid #169DB2;
+    border: 3px solid #169DB2;
     border-radius: 7px;
 }
-
 #city-display {
     text-shadow: 2px 2px 3px gray;
 }
@@ -29,23 +31,19 @@
     font-size: .9em;
     color: rgb(90, 90, 90);
 }
-
 #icon-display img {
     height: 2.2em;
     margin: -25px -5px -15px -5px;
 }
-
 #weather p {
     margin-bottom: .8rem;
 }
-
 /* UV Color Styles */
 .low {
     padding: 4px 6px;
     background: green;
     border-radius: 8px;
 }
-
 .moderate {
     padding: 4px 6px;
     background: yellow;
@@ -92,7 +90,6 @@ img.card-icon {
 .card-desc {
     font-style: italic;
 }
-
 
 /* Agolia API styles */
 .ap-input-icon.ap-icon-pin {
