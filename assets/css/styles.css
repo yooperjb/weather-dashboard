@@ -9,6 +9,11 @@
     margin: -15px 15px;
 }
 
+.list-group-item-action:active {
+    color: white;
+    background:#169DB2;
+}
+
 /* Weather display styles */
 #weather {
     margin: 10px 0px;
@@ -65,7 +70,7 @@
 }
 
 .card-body {
-    padding: .6rem;
+    padding: .4rem;
 }
 
 .card-body p {
